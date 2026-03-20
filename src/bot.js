@@ -13,7 +13,7 @@ if (!botToken) {
   throw new Error("BOT_TOKEN is missing");
 }
 
-const audioPath = path.join(__dirname, "..", "Media", "voice.ogg");
+const audioPath = path.join(__dirname, "..", "media", "voice.ogg");
 
 const bot = new TelegramBot(botToken, { polling: true });
 
