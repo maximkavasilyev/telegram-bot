@@ -218,10 +218,7 @@ bot.on("callback_query", async (query) => {
 
   if (data === "enter_room") {
     await safeAnswerCallbackQuery(bot, query.id);
-
-    await bot.sendAudio(chatId, audioPath, {
-      caption: "ТЕМНАЯ-КОМНАТА",
-    });
+    await bot.sendVoice(chatId, audioPath);
   }
 });
 
