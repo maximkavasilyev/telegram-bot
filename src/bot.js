@@ -9,7 +9,11 @@ const {
 
 const botToken = process.env.BOT_TOKEN;
 
-const audioPath = path.join(__dirname, "..", "media", "ТЕМНАЯ-КОМНАТА.ogg");
+if (!botToken) {
+  throw new Error("BOT_TOKEN is missing");
+}
+
+const audioPath = path.join(__dirname, "..", "Media", "voice.ogg");
 
 const bot = new TelegramBot(botToken, { polling: true });
 
@@ -218,7 +222,10 @@ bot.on("callback_query", async (query) => {
 
   if (data === "enter_room") {
     await safeAnswerCallbackQuery(bot, query.id);
-    await bot.sendVoice(chatId, audioPath);
+
+    await bot.sendVoice(chatId, audioPath, {
+      caption: "ТЕМНАЯ-КОМНАТА",
+    });
   }
 });
 
