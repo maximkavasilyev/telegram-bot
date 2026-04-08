@@ -74,14 +74,7 @@ async function resolveFirstExistingPath(paths) {
 }
 
 async function sendVoice(chatId) {
-  const voicePath = await resolveFirstExistingPath([
-    path.join(process.cwd(), "media", "voice2.ogg"),
-    path.join(process.cwd(), "media", "voice.ogg"),
-  ]);
-
-  if (!voicePath) {
-    throw new Error("Voice file not found: voice2.ogg / voice.ogg");
-  }
+  const voicePath = path.join(process.cwd(), "media", "voice.ogg");
 
   const buffer = await fs.readFile(voicePath);
 
@@ -91,7 +84,7 @@ async function sendVoice(chatId) {
   form.append(
     "voice",
     new Blob([buffer], { type: "audio/ogg" }),
-    path.basename(voicePath)
+    "voice.ogg"
   );
 
   const response = await fetch(`${TELEGRAM_API}/sendVoice`, {
@@ -100,6 +93,8 @@ async function sendVoice(chatId) {
   });
 
   const data = await response.json();
+
+  console.log("VOICE_UPLOAD_RESULT:", JSON.stringify(data));
 
   if (!data.ok) {
     throw new Error(data.description || "sendVoice failed");
