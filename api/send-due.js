@@ -1,6 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
-const db = require("../../src/db");
+const db = require("../src/db");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
