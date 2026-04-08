@@ -58,7 +58,19 @@ async function sendVoice(chatId) {
   form.append("caption", "ТЕМНАЯ-КОМНАТА");
   form.append("voice", new Blob([buffer], { type: "audio/ogg" }), "voice.ogg");
 
-  return tg("sendVoice", form, true);
+  const response = await fetch(`${TELEGRAM_API}/sendVoice`, {
+    method: "POST",
+    body: form,
+  });
+
+  const data = await response.json();
+  console.error("SEND_VOICE_RESULT:", JSON.stringify(data));
+
+  if (!data.ok) {
+    throw new Error(data.description || "sendVoice failed");
+  }
+
+  return data;
 }
 
 async function handleStart(chatId) {
