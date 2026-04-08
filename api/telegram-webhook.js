@@ -1,5 +1,9 @@
 const fs = require("fs/promises");
 const path = require("path");
+const {
+  createScheduledMessage,
+  clearScheduledMessagesForFlow,
+} = require("../src/repositories/scheduledMessageRepo");
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
@@ -223,6 +227,64 @@ P.S.
 
 Если чувствуешь отклик — напиши слово ЗЕРКАЛО мне в личку @soulteacher_english, и я расскажу, как пройти дальше 🤍`
   );
+}
+
+async function enqueueMainBlock2(chatId) {
+  const baseTime = Date.now() + 12 * 60 * 60 * 1000;
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_video",
+    payloadType: "video_note",
+    payloadKey: "MAIN_BLOCK2_VIDEO",
+    sendAt: new Date(baseTime),
+  });
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_text_1",
+    payloadType: "text",
+    payloadKey: "MAIN_BLOCK2_TEXT_1",
+    sendAt: new Date(baseTime + 1 * 60 * 1000),
+  });
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_text_2",
+    payloadType: "text",
+    payloadKey: "MAIN_BLOCK2_TEXT_2",
+    sendAt: new Date(baseTime + 2 * 60 * 1000),
+  });
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_text_3",
+    payloadType: "text",
+    payloadKey: "MAIN_BLOCK2_TEXT_3",
+    sendAt: new Date(baseTime + 3 * 60 * 1000),
+  });
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_text_4",
+    payloadType: "text",
+    payloadKey: "MAIN_BLOCK2_TEXT_4",
+    sendAt: new Date(baseTime + 4 * 60 * 1000),
+  });
+
+  await createScheduledMessage({
+    chatId,
+    flow: "main",
+    step: "block2_text_5",
+    payloadType: "text",
+    payloadKey: "MAIN_BLOCK2_TEXT_5",
+    sendAt: new Date(baseTime + 5 * 60 * 1000),
+  });
 }
 
 async function openFaq(chatId) {
@@ -534,8 +596,15 @@ module.exports = async (req, res) => {
       const text = message.text.trim();
 
       if (text.startsWith("/start")) {
+        await clearScheduledMessagesForFlow(chatId, "main");
         await handleStart(chatId);
-        return res.status(200).json({ ok: true, handled: "start" });
+        await enqueueMainBlock2(chatId);
+
+        return res.status(200).json({
+          ok: true,
+          handled: "start",
+          delayedScheduled: true,
+        });
       }
 
       if (text === "/faq") {
