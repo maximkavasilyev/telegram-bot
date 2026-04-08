@@ -74,33 +74,14 @@ async function resolveFirstExistingPath(paths) {
 }
 
 async function sendVoice(chatId) {
-  const voicePath = path.join(process.cwd(), "media", "voice.ogg");
+  const voiceFileId =
+    "AwACAgIAAxkDAAIIPWnWdp7cO4y-1gJ1A1VH5Q5DXW-NAALNmAACqM2wStvPk9UH9xPWOwQ";
 
-  const buffer = await fs.readFile(voicePath);
-
-  const form = new FormData();
-  form.append("chat_id", String(chatId));
-  form.append("caption", "ТЕМНАЯ-КОМНАТА");
-  form.append(
-    "voice",
-    new Blob([buffer], { type: "audio/ogg" }),
-    "voice.ogg"
-  );
-
-  const response = await fetch(`${TELEGRAM_API}/sendVoice`, {
-    method: "POST",
-    body: form,
+  return tg("sendVoice", {
+    chat_id: chatId,
+    voice: voiceFileId,
+    caption: "ТЕМНАЯ-КОМНАТА",
   });
-
-  const data = await response.json();
-
-  console.log("VOICE_UPLOAD_RESULT:", JSON.stringify(data));
-
-  if (!data.ok) {
-    throw new Error(data.description || "sendVoice failed");
-  }
-
-  return data;
 }
 
 async function sendMainBlock1Message1(chatId) {
