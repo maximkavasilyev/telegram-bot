@@ -595,17 +595,21 @@ module.exports = async (req, res) => {
       const chatId = message.chat.id;
       const text = message.text.trim();
 
-      if (text.startsWith("/start")) {
-        await clearScheduledMessagesForFlow(chatId, "main");
-        await handleStart(chatId);
-        await enqueueMainBlock2(chatId);
+if (text.startsWith("/start")) {
+  await handleStart(chatId);
 
-        return res.status(200).json({
-          ok: true,
-          handled: "start",
-          delayedScheduled: true,
-        });
-      }
+  try {
+    await clearScheduledMessagesForFlow(chatId, "main");
+    await enqueueMainBlock2(chatId);
+  } catch (error) {
+    console.error("DELAYED_SCHEDULE_ERROR:", error.message);
+  }
+
+  return res.status(200).json({
+    ok: true,
+    handled: "start",
+  });
+}
 
       if (text === "/faq") {
         await openFaq(chatId);
