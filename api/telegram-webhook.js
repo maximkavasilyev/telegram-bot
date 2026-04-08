@@ -56,7 +56,7 @@ async function sendVoice(chatId) {
   const form = new FormData();
   form.append("chat_id", String(chatId));
   form.append("caption", "ТЕМНАЯ-КОМНАТА");
-  form.append("voice", new Blob([buffer], { type: "audio/ogg" }), "voice2.ogg");
+  form.append("voice", new Blob([buffer], { type: "audio/ogg" }), "voice.ogg");
 
   const response = await fetch(`${TELEGRAM_API}/sendVoice`, {
     method: "POST",
