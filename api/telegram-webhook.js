@@ -135,7 +135,7 @@ async function enqueueMainFlow(chatId) {
     step: "block1_text_2",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK1_TEXT_2",
-    sendAt: new Date(now + 30 * 1000),
+    sendAt: new Date(now + 1 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -144,7 +144,7 @@ async function enqueueMainFlow(chatId) {
     step: "block1_text_3",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK1_TEXT_3",
-    sendAt: new Date(now + 60 * 1000),
+    sendAt: new Date(now + 2 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -153,10 +153,10 @@ async function enqueueMainFlow(chatId) {
     step: "block1_text_4",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK1_TEXT_4",
-    sendAt: new Date(now + 90 * 1000),
+    sendAt: new Date(now + 3 * 60 * 1000),
   });
 
-  const block2Base = now + 90 * 1000 + 12 * 60 * 60 * 1000;
+  const block2Base = now + (12 * 60 * 60 * 1000) + (3 * 60 * 1000);
 
   await createScheduledMessage({
     chatId,
@@ -173,7 +173,7 @@ async function enqueueMainFlow(chatId) {
     step: "block2_text_1",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK2_TEXT_1",
-    sendAt: new Date(block2Base + 30 * 1000),
+    sendAt: new Date(block2Base + 1 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -182,7 +182,7 @@ async function enqueueMainFlow(chatId) {
     step: "block2_text_2",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK2_TEXT_2",
-    sendAt: new Date(block2Base + 60 * 1000),
+    sendAt: new Date(block2Base + 2 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -191,7 +191,7 @@ async function enqueueMainFlow(chatId) {
     step: "block2_text_3",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK2_TEXT_3",
-    sendAt: new Date(block2Base + 90 * 1000),
+    sendAt: new Date(block2Base + 3 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -200,7 +200,7 @@ async function enqueueMainFlow(chatId) {
     step: "block2_text_4",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK2_TEXT_4",
-    sendAt: new Date(block2Base + 120 * 1000),
+    sendAt: new Date(block2Base + 4 * 60 * 1000),
   });
 
   await createScheduledMessage({
@@ -209,7 +209,7 @@ async function enqueueMainFlow(chatId) {
     step: "block2_text_5",
     payloadType: "text",
     payloadKey: "MAIN_BLOCK2_TEXT_5",
-    sendAt: new Date(block2Base + 150 * 1000),
+    sendAt: new Date(block2Base + 5 * 60 * 1000),
   });
 }
 
