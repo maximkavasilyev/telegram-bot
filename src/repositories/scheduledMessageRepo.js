@@ -11,7 +11,7 @@ async function createScheduledMessage({
   const result = await db.query(
     `
     INSERT INTO scheduled_messages (
-      chat_id,
+      telegram_chat_id,
       flow,
       step,
       payload_type,
@@ -32,7 +32,7 @@ async function clearScheduledMessagesForFlow(chatId, flow) {
   await db.query(
     `
     DELETE FROM scheduled_messages
-    WHERE chat_id = $1
+    WHERE telegram_chat_id = $1
       AND flow = $2
       AND status IN ('pending', 'processing')
     `,
