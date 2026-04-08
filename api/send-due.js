@@ -5,11 +5,58 @@ const db = require("../src/db");
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
+const enterKeyboard = {
+  inline_keyboard: [[{ text: "ЗАЙТИ", callback_data: "enter_room" }]],
+};
+
 const calmKeyboard = {
   inline_keyboard: [
     [{ text: "СПОКОЙСТВИЕ тут", url: "https://t.me/soulteacher_english" }],
   ],
 };
+
+const MAIN_BLOCK1_TEXT_2 = `Иногда женщина думает, что её проблема — тревога, усталость, отношения или нехватка денег.
+
+Но очень часто глубже лежит одно: она слишком долго была не собой.
+Удобной. Правильной. Но не живой.
+И хорошо, что всё можно изменить.
+
+Сегодня ты зайдёшь в Тёмную Комнату.
+К Зеркалу Истины.
+В котором увидишь свою настоящую силу, спрятанную в Тени.
+
+Иногда самое страшное — увидеть правду.
+Но именно там начинается настоящая свобода.`;
+
+const MAIN_BLOCK1_TEXT_3 = `После этой практики ты уже не сможешь так легко делать вид, что всё как раньше.
+Терпеть и соглашаться на меньшее.
+
+Потому что когда женщина однажды видит:
+— где она себя предаёт
+— чего на самом деле боится
+— какую силу прячет в своей тени
+
+всё меняется.
+Это только первая дверь.
+И, возможно, самая честная.
+
+Если ты готова войти — нажми ЗАЙТИ.
+
+P.S.
+🎧 Лучше слушать в наушниках
+🕯 Делать в тишине, где тебя никто не отвлекает.`;
+
+const MAIN_BLOCK1_TEXT_4 = `Если после этой практики ты чувствуешь, что увидела что-то очень важное…
+Если поняла, что за твоей тенью стоит не только боль, но и сила…
+
+Если внутри есть ощущение: я больше не могу жить как раньше, но пока не понимаю, как правильно забрать это себе — я могу провести тебя дальше.
+
+Есть вторая дверь.
+Бесплатный личный разбор, где мы идём глубже: не просто смотрим в тень, а достаём из неё твою силу, твой дар, твою правду.
+Это не обычный разговор.
+Это точечный проход туда, где твоя тень перестаёт пугать и начинает возвращать тебе энергию.
+
+Если чувствуешь отклик — напиши слово ЗЕРКАЛО мне в личку @soulteacher_english, и я расскажу, как пройти дальше 🤍`;
 
 const MAIN_BLOCK2_TEXT_1 = `Я искренне верю: каждой женщине нужна женщина🤍
 Не та, которая учит жить.
@@ -151,7 +198,28 @@ async function sendVideoNote(chatId) {
 }
 
 async function sendScheduledRow(row) {
-  const chatId = row.telegram_chat_id;
+  const chatId = row.telegram_chat_id || row.chat_id;
+
+  if (!chatId) {
+    throw new Error("Missing chat id in scheduled_messages row");
+  }
+
+  if (row.payload_type === "text" && row.payload_key === "MAIN_BLOCK1_TEXT_2") {
+    await sendMessage(chatId, MAIN_BLOCK1_TEXT_2);
+    return;
+  }
+
+  if (row.payload_type === "text" && row.payload_key === "MAIN_BLOCK1_TEXT_3") {
+    await sendMessage(chatId, MAIN_BLOCK1_TEXT_3, {
+      reply_markup: enterKeyboard,
+    });
+    return;
+  }
+
+  if (row.payload_type === "text" && row.payload_key === "MAIN_BLOCK1_TEXT_4") {
+    await sendMessage(chatId, MAIN_BLOCK1_TEXT_4);
+    return;
+  }
 
   if (row.payload_type === "video_note" && row.payload_key === "MAIN_BLOCK2_VIDEO") {
     await sendVideoNote(chatId);
